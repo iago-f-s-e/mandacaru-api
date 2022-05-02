@@ -1,8 +1,28 @@
-tsconfig.tsbuildinfo
-node_modules
+# compiled output
+/dist
+/node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# environment
 .env
-dist
-coverage
-ormconfig.js
+
+# Tests
+/coverage
+/.nyc_output
+
+# DB
+/.docker/dbdata
+
 .vscode
-.scannerwork
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
