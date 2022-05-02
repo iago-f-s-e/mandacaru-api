@@ -13,6 +13,7 @@ const dataSource = new DataSource({
   username: Settings.DB_USER,
   password: Settings.DB_PASS,
   logging: Settings.DB_LOGGING,
+  entities: [Settings.DB_PATH_ENTITIES],
   migrations: [Settings.DB_PATH_SEEDS]
 });
 

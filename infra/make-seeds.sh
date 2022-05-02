@@ -23,7 +23,7 @@ try
     read -p 'Seeds name: ' NAME
 
     yarn seeds:gen $NAME > /dev/null 2>&1 || throw $ERR_BAD
-    mv *.ts src/modules/database/migrations 
+    mv *.ts src/modules/database/seeds 
 
     echo "Seeds was created successfully!"
 )
