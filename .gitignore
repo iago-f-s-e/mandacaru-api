@@ -1,0 +1,8 @@
+tsconfig.tsbuildinfo
+node_modules
+.env
+dist
+coverage
+ormconfig.js
+.vscode
+.scannerwork
