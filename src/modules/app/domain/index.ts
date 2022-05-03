@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { RouteTree } from '@nestjs/core';
+import { cookingMeasureChildren, CookingMeasureModule } from './cooking-measure';
 import { nutrientChildren, NutrientModule } from './nutrient';
 import { referenceChildren, ReferenceModule } from './reference';
 
 @Module({
-  imports: [NutrientModule, ReferenceModule]
+  imports: [CookingMeasureModule, NutrientModule, ReferenceModule]
 })
 export class DomainModule {}
 
 export const domainPrefix: RouteTree = {
   path: '/',
   module: DomainModule,
-  children: [nutrientChildren, referenceChildren]
+  children: [cookingMeasureChildren, nutrientChildren, referenceChildren]
 };

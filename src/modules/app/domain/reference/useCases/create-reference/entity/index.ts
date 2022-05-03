@@ -19,7 +19,7 @@ export class ValidateToCreateReference {
     const name = this.nameOrError.value;
     const abbreviation = this.abbreviationOrError.value;
 
-    this.toCreate = this.afterValidate({ name, abbreviation });
+    this.toCreate = this.afterAssert({ name, abbreviation });
   }
 
   private set(data: ReferenceDTO): asserts this is this & Set {
@@ -51,7 +51,7 @@ export class ValidateToCreateReference {
     };
   }
 
-  private afterValidate(validated: Validated): CreateReferenceDTO {
+  private afterAssert(validated: Validated): CreateReferenceDTO {
     return {
       abbreviation: validated.abbreviation.value,
       name: validated.name.value.toUpperCase()

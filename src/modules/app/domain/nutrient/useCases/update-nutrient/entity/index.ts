@@ -8,7 +8,7 @@ import { UpdateNutrientDTO } from '../dtos';
 import { Assert, Errors, Set, Validated } from './types';
 
 export class ValidateToUpdateNutrient {
-  private readonly toCreate: UpdateNutrientDTO;
+  private readonly toUpdate: UpdateNutrientDTO;
   protected idOrError!: ValidateResponse<ValidateUUID>;
   protected nameOrError!: ValidateResponse<ValidateString>;
   protected abbreviationOrError!: ValidateResponse<ValidateString>;
@@ -29,7 +29,7 @@ export class ValidateToUpdateNutrient {
     const abbreviation = this.abbreviationOrError.value;
     const unitMeasure = this.unitMeasureOrError.value;
 
-    this.toCreate = this.afterValidate({ id, name, abbreviation, unitMeasure });
+    this.toUpdate = this.afterAssert({ id, name, abbreviation, unitMeasure });
   }
 
   private set(data: NutrientDTO & { id: string }): asserts this is this & Set {
@@ -71,7 +71,7 @@ export class ValidateToUpdateNutrient {
     };
   }
 
-  private afterValidate(validated: Validated): UpdateNutrientDTO {
+  private afterAssert(validated: Validated): UpdateNutrientDTO {
     return {
       id: validated.id.value,
       abbreviation: validated.abbreviation.value,
@@ -81,6 +81,6 @@ export class ValidateToUpdateNutrient {
   }
 
   public get value(): Readonly<UpdateNutrientDTO> {
-    return Object.freeze(this.toCreate);
+    return Object.freeze(this.toUpdate);
   }
 }

@@ -20,7 +20,7 @@ export class ValidateToUpdateReference {
     const name = this.nameOrError.value;
     const abbreviation = this.abbreviationOrError.value;
 
-    this.toUpdate = this.afterValidate({ name, abbreviation, id });
+    this.toUpdate = this.afterAssert({ name, abbreviation, id });
   }
 
   private set(data: ReferenceDTO & { id: string }): asserts this is this & Set {
@@ -55,7 +55,7 @@ export class ValidateToUpdateReference {
     };
   }
 
-  private afterValidate(validated: Validated): UpdateReferenceDTO {
+  private afterAssert(validated: Validated): UpdateReferenceDTO {
     return {
       id: validated.id.value,
       abbreviation: validated.abbreviation.value,

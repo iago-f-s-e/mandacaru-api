@@ -22,7 +22,7 @@ export class ValidateToCreateNutrient {
     const abbreviation = this.abbreviationOrError.value;
     const unitMeasure = this.unitMeasureOrError.value;
 
-    this.toCreate = this.afterValidate({ name, abbreviation, unitMeasure });
+    this.toCreate = this.afterAssert({ name, abbreviation, unitMeasure });
   }
 
   private set(data: NutrientDTO): asserts this is this & Set {
@@ -61,7 +61,7 @@ export class ValidateToCreateNutrient {
     };
   }
 
-  private afterValidate(validated: Validated): CreateNutrientDTO {
+  private afterAssert(validated: Validated): CreateNutrientDTO {
     return {
       abbreviation: validated.abbreviation.value,
       name: validated.name.value.toUpperCase(),
