@@ -7,8 +7,11 @@ import { Repository } from 'typeorm';
 export class FindReferenceRepository {
   constructor(@InjectRepository(Reference) private readonly reference: Repository<Reference>) {}
 
-  public byName(name: string, abbreviation: string): Promise<Reference | null> {
-    return this.reference.findOneBy({ name, abbreviation });
+  public existing(name: string): Promise<Reference | null> {
+    return this.reference.findOne({
+      where: { name },
+      select: { id: true, isActive: true }
+    });
   }
 
   public byId(id: string): Promise<Reference | null> {

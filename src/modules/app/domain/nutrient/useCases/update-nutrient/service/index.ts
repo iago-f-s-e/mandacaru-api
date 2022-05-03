@@ -1,9 +1,9 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { left, right } from '@src/modules/common/either';
 import { UpdateResponse } from '@src/modules/common/types/responses';
-import { FindReferenceRepository } from '../../find-reference/repository';
-import { UpdateReferenceDTO } from '../dtos';
-import { UpdateReferenceRepository } from '../repository';
+import { FindNutrientRepository } from '../../find-nutrient/repository';
+import { UpdateNutrientDTO } from '../dtos';
+import { UpdateNutrientRepository } from '../repository';
 
 type Errors = {
   conflict: string;
@@ -11,32 +11,32 @@ type Errors = {
 };
 
 @Injectable()
-export class UpdateReferenceService {
+export class UpdateNutrientService {
   constructor(
-    private readonly updateReference: UpdateReferenceRepository,
-    private readonly findReference: FindReferenceRepository
+    private readonly updateNutrient: UpdateNutrientRepository,
+    private readonly findNutrient: FindNutrientRepository
   ) {}
 
-  private errorMessage(data: UpdateReferenceDTO): Errors {
+  private errorMessage(data: UpdateNutrientDTO): Errors {
     return {
       conflict: `The name "${data.name}" already exists`,
-      notFound: 'Reference is not found'
+      notFound: 'Nutrient is not found'
     };
   }
 
-  public async exec(data: UpdateReferenceDTO): UpdateResponse<UpdateReferenceDTO> {
+  public async exec(data: UpdateNutrientDTO): UpdateResponse<UpdateNutrientDTO> {
     const error = this.errorMessage(data);
 
     const [original, existing] = await Promise.all([
-      this.findReference.byId(data.id),
-      this.findReference.existing(data.name)
+      this.findNutrient.byId(data.id),
+      this.findNutrient.existing(data.name)
     ]);
 
     if (!original) return left(new NotFoundException(error.notFound));
 
     if (!!existing && existing.id !== data.id) return left(new ConflictException(error.conflict));
 
-    await this.updateReference.exec(data);
+    await this.updateNutrient.exec(data);
 
     return right(data);
   }

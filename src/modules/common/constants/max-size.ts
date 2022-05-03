@@ -1,4 +1,7 @@
 export const maxSize = {
   ABBREVIATION: 10,
+  UNIT_MEASURE: 10,
+
+  NUTRIENT_NAME: 50,
   REFERENCE_NAME: 150
 };

@@ -29,7 +29,7 @@ export class CreateReferenceService {
   }
 
   public async exec(data: CreateReferenceDTO): CreateResponse<Reference> {
-    const found = await this.findReference.byName(data.name, data.abbreviation);
+    const found = await this.findReference.existing(data.name);
 
     if (!found) return right(await this.insert(data));
 

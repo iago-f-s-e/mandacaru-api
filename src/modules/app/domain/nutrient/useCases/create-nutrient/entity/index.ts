@@ -2,32 +2,35 @@ import { maxSize } from '@src/modules/common/constants';
 import { ValidateResponse } from '@src/modules/common/types/responses';
 import { ValidateString } from '@src/modules/common/validators';
 import { ToBeAssert } from '@src/modules/common/validators/types';
-import { ReferenceDTO } from '../../../dtos';
-import { CreateReferenceDTO } from '../dtos';
+import { NutrientDTO } from '../../../dtos';
+import { CreateNutrientDTO } from '../dtos';
+
 import { Assert, Errors, Set, Validated } from './types';
 
-export class ValidateToCreateReference {
-  private readonly toCreate: CreateReferenceDTO;
+export class ValidateToCreateNutrient {
+  private readonly toCreate: CreateNutrientDTO;
   protected nameOrError!: ValidateResponse<ValidateString>;
   protected abbreviationOrError!: ValidateResponse<ValidateString>;
+  protected unitMeasureOrError!: ValidateResponse<ValidateString>;
 
-  constructor(data: ReferenceDTO) {
+  constructor(data: NutrientDTO) {
     this.set(data);
 
-    this.assert(this.nameOrError, this.abbreviationOrError);
+    this.assert(this.nameOrError, this.abbreviationOrError, this.unitMeasureOrError);
 
     const name = this.nameOrError.value;
     const abbreviation = this.abbreviationOrError.value;
+    const unitMeasure = this.unitMeasureOrError.value;
 
-    this.toCreate = this.afterValidate({ name, abbreviation });
+    this.toCreate = this.afterValidate({ name, abbreviation, unitMeasure });
   }
 
-  private set(data: ReferenceDTO): asserts this is this & Set {
+  private set(data: NutrientDTO): asserts this is this & Set {
     const errorMessage = this.getErrorMessage(data);
 
     this.nameOrError = ValidateString.exec(
       data.name,
-      { isOptional: false, maxSize: maxSize.REFERENCE_NAME },
+      { isOptional: false, maxSize: maxSize.NUTRIENT_NAME },
       { errorMessage: errorMessage.name }
     );
 
@@ -35,6 +38,12 @@ export class ValidateToCreateReference {
       data.abbreviation,
       { isOptional: false, maxSize: maxSize.ABBREVIATION },
       { errorMessage: errorMessage.abbreviation }
+    );
+
+    this.unitMeasureOrError = ValidateString.exec(
+      data.unitMeasure,
+      { isOptional: false, maxSize: maxSize.UNIT_MEASURE },
+      { errorMessage: errorMessage.unitMeasure }
     );
   }
 
@@ -44,21 +53,23 @@ export class ValidateToCreateReference {
     }
   }
 
-  private getErrorMessage(data: ReferenceDTO): Errors {
+  private getErrorMessage(data: NutrientDTO): Errors {
     return {
       name: `The name "${data.name}" is invalid`,
-      abbreviation: `The abbreviation "${data.abbreviation}" is invalid`
+      abbreviation: `The abbreviation "${data.abbreviation}" is invalid`,
+      unitMeasure: `The unit measure "${data.unitMeasure}" is invalid`
     };
   }
 
-  private afterValidate(validated: Validated): CreateReferenceDTO {
+  private afterValidate(validated: Validated): CreateNutrientDTO {
     return {
       abbreviation: validated.abbreviation.value,
-      name: validated.name.value.toUpperCase()
+      name: validated.name.value.toUpperCase(),
+      unitMeasure: validated.unitMeasure.value
     };
   }
 
-  public get value(): Readonly<CreateReferenceDTO> {
+  public get value(): Readonly<CreateNutrientDTO> {
     return Object.freeze(this.toCreate);
   }
 }
