@@ -1,6 +1,15 @@
 import { maxSize } from '@src/modules/common/constants';
-import { Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn
+} from 'typeorm';
 import { BaseEntity } from './base-entity';
+import { CompositionNutrient } from './composition-nutrient';
 
 @Entity('nutrient')
 export class Nutrient extends BaseEntity {
@@ -26,4 +35,7 @@ export class Nutrient extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at', default: 'now()', select: false })
   public readonly updatedAt!: Date;
+
+  @OneToMany(() => CompositionNutrient, compositions => compositions.nutrient)
+  public readonly compositions!: CompositionNutrient[];
 }
