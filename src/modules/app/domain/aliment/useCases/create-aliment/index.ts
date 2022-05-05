@@ -3,12 +3,13 @@ import { RouteTree } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Aliment } from '@src/modules/database/entities';
 import { FindAlimentModule } from '../find-aliment';
+import { UpdateAlimentModule } from '../update-aliment';
 import { CreateAlimentController } from './controller';
 import { CreateAlimentRepository } from './repository';
 import { CreateAlimentService } from './service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Aliment]), FindAlimentModule],
+  imports: [TypeOrmModule.forFeature([Aliment]), FindAlimentModule, UpdateAlimentModule],
   controllers: [CreateAlimentController],
   providers: [CreateAlimentRepository, CreateAlimentService]
 })

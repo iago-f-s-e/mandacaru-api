@@ -3,6 +3,7 @@ import { left, right } from '@src/modules/common/either';
 import { CreateResponse } from '@src/modules/common/types/responses';
 import { Aliment } from '@src/modules/database/entities';
 import { FindAlimentRepository } from '../../find-aliment/repository';
+import { UpdateAlimentRepository } from '../../update-aliment/repository';
 import { CreateAlimentDTO } from '../dtos';
 import { CreateAlimentRepository } from '../repository';
 
@@ -10,7 +11,8 @@ import { CreateAlimentRepository } from '../repository';
 export class CreateAlimentService {
   constructor(
     private readonly createAliment: CreateAlimentRepository,
-    private readonly findAliment: FindAlimentRepository
+    private readonly findAliment: FindAlimentRepository,
+    private readonly updateAliment: UpdateAlimentRepository
   ) {}
 
   private insert(data: CreateAlimentDTO): Promise<Aliment> {
@@ -28,7 +30,7 @@ export class CreateAlimentService {
 
     if (existing.isActive) return left(new ConflictException(this.errorMessage(data)));
 
-    //  TODO: reactive and update
+    await this.updateAliment.reactive(existing.id);
 
     return right(existing);
   }

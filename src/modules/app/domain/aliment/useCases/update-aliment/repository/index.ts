@@ -8,6 +8,10 @@ import { UpdateAlimentDTO } from '../dtos';
 export class UpdateAlimentRepository {
   constructor(@InjectRepository(Aliment) private readonly aliment: Repository<Aliment>) {}
 
+  public reactive(id: string): Promise<UpdateResult> {
+    return this.aliment.update({ id }, { isActive: true });
+  }
+
   public inactive(id: string): Promise<UpdateResult> {
     return this.aliment.update({ id }, { isActive: false });
   }
