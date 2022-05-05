@@ -4,26 +4,23 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  OneToMany,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { BaseEntity } from './base-entity';
 import { Composition } from './composition';
 
-@Entity('reference')
-export class Reference extends BaseEntity {
-  @PrimaryColumn({ type: 'uuid', name: 'reference_id' })
+@Entity('aliment')
+export class Aliment extends BaseEntity {
+  @PrimaryColumn({ type: 'uuid', name: 'aliment_id' })
   public readonly id!: string;
 
-  @Index('IDX_reference_name', { unique: true })
-  @Column({ type: 'varchar', length: maxSize.REFERENCE_NAME })
+  @Index('IDX_aliment_name', { unique: true })
+  @Column({ type: 'varchar', length: maxSize.ALIMENT_NAME })
   public readonly name!: string;
 
-  @Column({ type: 'varchar', length: maxSize.ABBREVIATION })
-  public readonly abbreviation!: string;
-
-  @Index('IDX_reference_is_active', { unique: false })
+  @Index('IDX_aliment_is_active', { unique: false })
   @Column({ type: 'boolean', name: 'is_active', default: true, select: false })
   public readonly isActive!: boolean;
 
@@ -33,6 +30,6 @@ export class Reference extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at', default: 'now()', select: false })
   public readonly updatedAt!: Date;
 
-  @OneToMany(() => Composition, composition => composition.reference)
-  public readonly compositions!: Composition[];
+  @OneToOne(() => Composition, composition => composition.aliment, { cascade: true })
+  public readonly composition!: Composition;
 }

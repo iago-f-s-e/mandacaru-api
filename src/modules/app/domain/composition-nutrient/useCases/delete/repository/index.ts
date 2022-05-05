@@ -1,18 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompositionNutrient } from '@src/modules/database/entities';
-import { Repository } from 'typeorm';
-import { CreateCompositionNutrientDTO } from '../dtos';
+import { DeleteResult, Repository } from 'typeorm';
 
-type Data = CreateCompositionNutrientDTO & { compositionId: string };
 @Injectable()
-export class CreateCompositionNutrientRepository {
+export class DeleteCompositionNutrientRepository {
   constructor(
     @InjectRepository(CompositionNutrient)
     private readonly compositionNutrient: Repository<CompositionNutrient>
   ) {}
 
-  public exec(data: Data[]): Promise<CompositionNutrient[]> {
-    return this.compositionNutrient.save(data);
+  public exec(compositionId: string, nutrientId: string): Promise<DeleteResult> {
+    return this.compositionNutrient.delete({ compositionId, nutrientId });
   }
 }

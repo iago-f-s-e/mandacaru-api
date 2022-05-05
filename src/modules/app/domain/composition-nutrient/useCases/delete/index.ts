@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompositionNutrient } from '@src/modules/database/entities';
-import { CreateCompositionNutrientRepository } from './repository';
+import { DeleteCompositionNutrientRepository } from './repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CompositionNutrient])],
-  exports: [CreateCompositionNutrientRepository],
-  providers: [CreateCompositionNutrientRepository]
+  exports: [DeleteCompositionNutrientRepository],
+  providers: [DeleteCompositionNutrientRepository]
 })
-export class CreateCompositionNutrientModule {}
+export class DeleteCompositionNutrientModule {}
