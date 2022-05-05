@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Composition, CompositionNutrient } from '@src/modules/database/entities';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { CreateCompositionNutrientRepository } from '../../create-composition-nutrient/repository';
-import { DeleteCompositionNutrientRepository } from '../../delete/repository';
+import { DeleteCompositionNutrientRepository } from '../../delete-composition-nutrient/repository';
 import { UpdateCompositionNutrientDTO } from '../dtos';
 import { UpdateCompositionNutrientRepository } from '../repository';
 

@@ -11,6 +11,7 @@ import {
 import { AlimentMeasure } from './aliment-measure';
 import { BaseEntity } from './base-entity';
 import { Composition } from './composition';
+import { Recipe } from './recipe';
 
 @Entity('reference')
 export class Reference extends BaseEntity {
@@ -39,4 +40,7 @@ export class Reference extends BaseEntity {
 
   @OneToMany(() => AlimentMeasure, alimentMeasures => alimentMeasures.reference)
   public readonly alimentMeasures!: AlimentMeasure[];
+
+  @OneToMany(() => Recipe, recipes => recipes.reference)
+  public readonly recipes!: Recipe[];
 }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompositionNutrient } from '@src/modules/database/entities';
 import { CreateCompositionNutrientModule } from '../create-composition-nutrient';
-import { DeleteCompositionNutrientModule } from '../delete';
+import { DeleteCompositionNutrientModule } from '../delete-composition-nutrient';
 import { UpdateCompositionNutrientRepository } from './repository';
 import { UpdateCompositionNutrientService } from './service';
 

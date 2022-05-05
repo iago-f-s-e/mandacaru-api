@@ -1,7 +1,8 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { Aliment } from './aliment';
 import { BaseEntity } from './base-entity';
 import { CookingMeasure } from './cooking-measure';
+import { RecipeComposition } from './recipe-composition';
 import { Reference } from './reference';
 
 @Entity('aliment_measure')
@@ -45,4 +46,7 @@ export class AlimentMeasure extends BaseEntity {
   })
   @JoinColumn({ name: 'reference_id', referencedColumnName: 'id' })
   public readonly reference!: Reference;
+
+  @OneToMany(() => RecipeComposition, recipes => recipes.alimentMeasure)
+  public readonly recipes!: RecipeComposition[];
 }

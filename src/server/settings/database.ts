@@ -19,4 +19,4 @@ export const DB_PATH_MIGRATIONS = `${dir}/modules/database/migrations/*.{ts,js}`
 
 export const DB_PATH_SEEDS = `${dir}/modules/database/seeds/*.{ts,js}`;
 
-export const DB_LOGGING: LoggerOptions = ['error', 'warn'];
+export const DB_LOGGING: LoggerOptions = ['error', 'warn', 'query'];
