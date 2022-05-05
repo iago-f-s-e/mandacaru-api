@@ -1,6 +1,15 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn
+} from 'typeorm';
 import { maxSize } from '@src/modules/common/constants';
-import { Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { BaseEntity } from './base-entity';
+import { AlimentMeasure } from './aliment-measure';
 
 @Entity('cooking_measure')
 export class CookingMeasure extends BaseEntity {
@@ -20,4 +29,7 @@ export class CookingMeasure extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at', default: 'now()', select: false })
   public readonly updatedAt!: Date;
+
+  @OneToMany(() => AlimentMeasure, aliments => aliments.measure)
+  public readonly aliments!: AlimentMeasure[];
 }

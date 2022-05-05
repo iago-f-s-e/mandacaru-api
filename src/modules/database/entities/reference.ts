@@ -8,6 +8,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { AlimentMeasure } from './aliment-measure';
 import { BaseEntity } from './base-entity';
 import { Composition } from './composition';
 
@@ -35,4 +36,7 @@ export class Reference extends BaseEntity {
 
   @OneToMany(() => Composition, composition => composition.reference)
   public readonly compositions!: Composition[];
+
+  @OneToMany(() => AlimentMeasure, alimentMeasures => alimentMeasures.reference)
+  public readonly alimentMeasures!: AlimentMeasure[];
 }

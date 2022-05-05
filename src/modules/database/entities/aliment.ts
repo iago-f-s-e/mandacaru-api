@@ -4,10 +4,12 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { AlimentMeasure } from './aliment-measure';
 import { BaseEntity } from './base-entity';
 import { Composition } from './composition';
 
@@ -32,4 +34,7 @@ export class Aliment extends BaseEntity {
 
   @OneToOne(() => Composition, composition => composition.aliment, { cascade: true })
   public readonly composition!: Composition;
+
+  @OneToMany(() => AlimentMeasure, measures => measures.aliment)
+  public readonly measures!: AlimentMeasure[];
 }

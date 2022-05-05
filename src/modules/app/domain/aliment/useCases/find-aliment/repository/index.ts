@@ -42,12 +42,18 @@ export class FindAlimentRepository {
         'nutrient.id',
         'nutrient.abbreviation',
         'nutrient.name',
-        'nutrient.unitMeasure'
+        'nutrient.unitMeasure',
+        'measures.quantity',
+        'measures.id',
+        'measure.id',
+        'measure.name'
       ])
       .innerJoin('aliment.composition', 'composition')
       .innerJoin('composition.reference', 'reference', 'reference.isActive = true')
       .leftJoin('composition.nutrients', 'nutrients')
       .leftJoin('nutrients.nutrient', 'nutrient', 'nutrient.isActive = true')
+      .leftJoin('aliment.measures', 'measures', 'measures.isActive = true')
+      .leftJoin('measures.measure', 'measure', 'measure.isActive = true')
       .where('aliment.id = :id', { id })
       .andWhere('aliment.isActive = true')
       .getOne();
@@ -62,10 +68,16 @@ export class FindAlimentRepository {
         'composition.id',
         'composition.quantity',
         'reference.id',
-        'reference.name'
+        'reference.name',
+        'measures.quantity',
+        'measures.id',
+        'measure.id',
+        'measure.name'
       ])
       .innerJoin('aliment.composition', 'composition')
       .innerJoin('composition.reference', 'reference', 'reference.isActive = true')
+      .leftJoin('aliment.measures', 'measures', 'measures.isActive = true')
+      .leftJoin('measures.measure', 'measure', 'measure.isActive = true')
       .where('aliment.isActive = true')
       .orderBy('aliment.name', 'ASC')
       .getMany();
