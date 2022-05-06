@@ -20,3 +20,6 @@ export const DB_PATH_MIGRATIONS = `${dir}/modules/database/migrations/*.{ts,js}`
 export const DB_PATH_SEEDS = `${dir}/modules/database/seeds/*.{ts,js}`;
 
 export const DB_LOGGING: LoggerOptions = ['error', 'warn'];
+
+export const TRANSFORMER_KEY_SECURITY = process.env.TRANSFORMER_KEY_SECURITY || 'secret';
+export const TRANSFORMER_KEY_IV = process.env.TRANSFORMER_KEY_IV || 'secret';

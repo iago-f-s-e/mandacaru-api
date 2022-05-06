@@ -19,7 +19,7 @@ import { referenceChildren, ReferenceModule } from './reference';
 })
 export class DomainModule {}
 
-export const domainPrefix: RouteTree = {
+export const domainChildren: RouteTree = {
   path: '/',
   module: DomainModule,
   children: [
