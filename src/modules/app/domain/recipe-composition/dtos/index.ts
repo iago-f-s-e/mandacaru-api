@@ -1,1 +1,4 @@
-export * from './recipe-composition.dto';
+export type RecipeCompositionDTO = {
+  measureId: string;
+  quantity: string;
+};

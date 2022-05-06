@@ -1,1 +1,6 @@
-export * from './create-aliment-measure.dto';
+export type CreateAlimentMeasureDTO = {
+  alimentId: string;
+  measureId: string;
+  referenceId: string;
+  quantity: number;
+};

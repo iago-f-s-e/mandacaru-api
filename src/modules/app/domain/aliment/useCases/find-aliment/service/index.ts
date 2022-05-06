@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { left, right } from '@src/modules/common/either';
 import { FindResponse } from '@src/modules/common/types/responses';
 import { Aliment } from '@src/modules/database/entities';
+import { ListAliment } from '../dtos';
 import { FindAlimentRepository } from '../repository';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class FindAlimentService {
     return right(aliment);
   }
 
-  public exec(): Promise<Aliment[]> {
-    return this.findAliment.exec();
+  public exec(filter: ListAliment): Promise<Aliment[]> {
+    return this.findAliment.exec(filter);
   }
 }

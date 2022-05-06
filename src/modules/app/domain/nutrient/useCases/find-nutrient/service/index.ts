@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { left, right } from '@src/modules/common/either';
 import { FindResponse } from '@src/modules/common/types/responses';
 import { Nutrient } from '@src/modules/database/entities';
+import { ListNutrientDTO } from '../dtos';
 import { FindNutrientRepository } from '../repository';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class FindNutrientService {
     return right(nutrient);
   }
 
-  public exec(): Promise<Nutrient[]> {
-    return this.findNutrient.exec();
+  public exec(filter: ListNutrientDTO): Promise<Nutrient[]> {
+    return this.findNutrient.exec(filter);
   }
 }

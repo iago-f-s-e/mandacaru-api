@@ -1,5 +1,6 @@
-import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
-import { Reference } from '@src/modules/database/entities';
+import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
+import { GetReference } from '../../../types/get-reference';
+import { ListReferenceDTO } from '../dtos';
 import { FindReferenceService } from '../service';
 
 @Controller()
@@ -7,7 +8,7 @@ export class FindReferenceController {
   constructor(private readonly findService: FindReferenceService) {}
 
   @Get(':id')
-  public async byId(@Param('id', new ParseUUIDPipe()) id: string): Promise<Reference> {
+  public async byId(@Param('id', new ParseUUIDPipe()) id: string): GetReference {
     const referenceOrError = await this.findService.byId(id);
 
     if (referenceOrError.isLeft()) throw referenceOrError.value;
@@ -16,7 +17,7 @@ export class FindReferenceController {
   }
 
   @Get('')
-  public async exec(): Promise<Reference[]> {
-    return this.findService.exec();
+  public async exec(@Query() filter: ListReferenceDTO): GetReference {
+    return this.findService.exec(filter);
   }
 }

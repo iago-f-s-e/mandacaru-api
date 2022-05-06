@@ -1,1 +1,5 @@
-export * from './update-reference.dto';
+export type UpdateReferenceDTO = {
+  id: string;
+  name: string;
+  abbreviation: string;
+};

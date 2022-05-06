@@ -1,1 +1,4 @@
-export * from './update-cooking-measure.dto';
+export type UpdateCookingMeasureDTO = {
+  id: string;
+  name: string;
+};

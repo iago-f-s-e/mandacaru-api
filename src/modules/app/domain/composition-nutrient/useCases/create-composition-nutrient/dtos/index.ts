@@ -1,1 +1,4 @@
-export * from './create-composition-nutrient.dto';
+export type CreateCompositionNutrientDTO = {
+  nutrientId: string;
+  quantity: number;
+};

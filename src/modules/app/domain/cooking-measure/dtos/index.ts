@@ -1,1 +1,3 @@
-export * from './cooking-measure.dto';
+export type CookingMeasureDTO = {
+  name: string;
+};

@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { iLikeGenerator } from '@src/modules/common/utils';
 import { Recipe } from '@src/modules/database/entities';
 import { Repository } from 'typeorm';
+import { ListRecipeDTO } from '../dtos';
 
 @Injectable()
 export class FindRecipeRepository {
@@ -45,7 +47,9 @@ export class FindRecipeRepository {
       .getOne();
   }
 
-  public exec(): Promise<Recipe[]> {
+  public exec(filter: ListRecipeDTO): Promise<Recipe[]> {
+    const ilike = iLikeGenerator(filter, 'recipe');
+
     return this.recipe
       .createQueryBuilder('recipe')
       .select(['recipe.id', 'recipe.name', 'recipe.gram', 'reference.name', 'reference.id'])
@@ -55,6 +59,8 @@ export class FindRecipeRepository {
       .innerJoin('alimentMeasure.aliment', 'aliment', 'aliment.isActive = true')
       .innerJoin('recipe.reference', 'reference', 'reference.isActive = true')
       .where('recipe.isActive = true')
+      .andWhere(ilike.query, ilike.params)
+      .orderBy('recipe.name', 'ASC')
       .getMany();
   }
 }

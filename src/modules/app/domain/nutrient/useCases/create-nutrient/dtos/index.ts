@@ -1,1 +1,5 @@
-export * from './create-nutrient.dto';
+export type CreateNutrientDTO = {
+  name: string;
+  abbreviation: string;
+  unitMeasure: string;
+};

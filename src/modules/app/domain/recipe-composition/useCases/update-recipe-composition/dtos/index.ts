@@ -1,1 +1,5 @@
-export * from './update-recipe-composition.dto';
+export type UpdateRecipeCompositionDTO = {
+  recipeId: string;
+  alimentMeasureId: string;
+  quantity: number;
+};

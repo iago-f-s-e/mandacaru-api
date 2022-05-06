@@ -1,5 +1,6 @@
-import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
-import { CookingMeasure } from '@src/modules/database/entities';
+import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
+import { GetCookingMeasure } from '../../../types';
+import { ListCookingMeasure } from '../dtos';
 import { FindCookingMeasureService } from '../service';
 
 @Controller()
@@ -7,7 +8,7 @@ export class FindCookingMeasureController {
   constructor(private readonly findService: FindCookingMeasureService) {}
 
   @Get(':id')
-  public async byId(@Param('id', new ParseUUIDPipe()) id: string): Promise<CookingMeasure> {
+  public async byId(@Param('id', new ParseUUIDPipe()) id: string): GetCookingMeasure {
     const cookingMeasureOrError = await this.findService.byId(id);
 
     if (cookingMeasureOrError.isLeft()) throw cookingMeasureOrError.value;
@@ -16,7 +17,7 @@ export class FindCookingMeasureController {
   }
 
   @Get()
-  public exec(): Promise<CookingMeasure[]> {
-    return this.findService.exec();
+  public exec(@Query() filter: ListCookingMeasure): GetCookingMeasure {
+    return this.findService.exec(filter);
   }
 }

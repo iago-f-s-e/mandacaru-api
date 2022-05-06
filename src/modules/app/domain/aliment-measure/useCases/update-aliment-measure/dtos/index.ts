@@ -1,1 +1,4 @@
-export * from './update-aliment-measure.dto';
+export type UpdateAlimentMeasureDTO = {
+  id: string;
+  quantity: number;
+};

@@ -1,1 +1,4 @@
-export * from './create-reference.dto';
+export type CreateReferenceDTO = {
+  name: string;
+  abbreviation: string;
+};

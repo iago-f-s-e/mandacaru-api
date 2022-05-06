@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { left, right } from '@src/modules/common/either';
 import { FindResponse } from '@src/modules/common/types/responses';
 import { Recipe } from '@src/modules/database/entities';
+import { ListRecipeDTO, RecipeToClientDTO } from '../dtos';
 import { FindRecipeRepository } from '../repository';
 
 @Injectable()
@@ -12,15 +13,26 @@ export class FindRecipeService {
     return 'Recipe is not found';
   }
 
-  public async byId(id: string): FindResponse<Recipe> {
+  private toClient(data: Recipe): RecipeToClientDTO {
+    return {
+      ...data,
+      compositions: data.compositions?.map(composition => ({
+        alimentId: composition.alimentMeasure.aliment.id,
+        measureId: composition.alimentMeasure.id,
+        quantity: composition.quantity
+      }))
+    };
+  }
+
+  public async byId(id: string): FindResponse<RecipeToClientDTO> {
     const recipe = await this.findRecipe.byId(id);
 
     if (!recipe) return left(new NotFoundException(this.errorMessage()));
 
-    return right(recipe);
+    return right(this.toClient(recipe));
   }
 
-  public exec(): Promise<Recipe[]> {
-    return this.findRecipe.exec();
+  public async exec(filter: ListRecipeDTO): Promise<RecipeToClientDTO[]> {
+    return (await this.findRecipe.exec(filter)).map(data => this.toClient(data));
   }
 }

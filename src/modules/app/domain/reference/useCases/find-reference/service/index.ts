@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { left, right } from '@src/modules/common/either';
 import { FindResponse } from '@src/modules/common/types/responses';
 import { Reference } from '@src/modules/database/entities';
+import { ListReferenceDTO } from '../dtos';
 import { FindReferenceRepository } from '../repository';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class FindReferenceService {
     return right(reference);
   }
 
-  public exec(): Promise<Reference[]> {
-    return this.findReference.exec();
+  public exec(filter: ListReferenceDTO): Promise<Reference[]> {
+    return this.findReference.exec(filter);
   }
 }

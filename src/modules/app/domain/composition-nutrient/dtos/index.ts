@@ -1,1 +1,6 @@
-export * from './composition-nutrient.dto';
+export type CompositionNutrientDTO = {
+  nutrient: {
+    id: string;
+  };
+  quantity: string;
+};

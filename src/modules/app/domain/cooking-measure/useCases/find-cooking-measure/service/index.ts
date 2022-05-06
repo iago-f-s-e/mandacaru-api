@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { left, right } from '@src/modules/common/either';
 import { FindResponse } from '@src/modules/common/types/responses';
 import { CookingMeasure } from '@src/modules/database/entities';
+import { ListCookingMeasure } from '../dtos';
 import { FindCookingMeasureRepository } from '../repository';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class FindCookingMeasureService {
     return right(cookingMeasure);
   }
 
-  public exec(): Promise<CookingMeasure[]> {
-    return this.findCookingMeasure.exec();
+  public exec(filter: ListCookingMeasure): Promise<CookingMeasure[]> {
+    return this.findCookingMeasure.exec(filter);
   }
 }
