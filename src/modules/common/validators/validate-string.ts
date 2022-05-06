@@ -6,6 +6,7 @@ import { OnError } from './types';
 type Options = {
   isOptional: boolean;
   maxSize: number;
+  minSize?: number;
 };
 
 export class ValidateString {
@@ -21,7 +22,7 @@ export class ValidateString {
     options: Options,
     onError: OnError
   ): ValidateResponse<ValidateString> {
-    const withoutBlankSpace = data?.trim() || '';
+    const withoutBlankSpace = data?.trim() || (null as unknown as string);
 
     if (!this.isValid(withoutBlankSpace, options))
       return left(new BadRequestException(onError.errorMessage));
@@ -32,9 +33,9 @@ export class ValidateString {
   private static isValid(data: string, options: Options): boolean {
     if (options.isOptional) return true;
 
-    const minSize = 1;
+    const minSize = options.minSize || 2;
 
-    return !!data && !!data.length && data.length > minSize && data.length <= options.maxSize;
+    return !!data && !!data.length && data.length >= minSize && data.length <= options.maxSize;
   }
 
   public get value(): Readonly<string> {

@@ -1,3 +1,3 @@
-import { RecipeToClientDTO } from '../useCases/find-recipe/dtos';
+import { RecipeToClientDTO } from '../dtos';
 
 export type GetRecipe = Promise<RecipeToClientDTO | RecipeToClientDTO[]>;

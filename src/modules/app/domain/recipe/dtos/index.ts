@@ -1,10 +1,2 @@
-import { RecipeCompositionDTO } from '../../recipe-composition/dtos';
-
-export type RecipeDTO = {
-  id: string;
-  name: string;
-  gram: string;
-  referenceId: string;
-  preparationMethod: string;
-  compositions: RecipeCompositionDTO[];
-};
+export * from './recipe.dto';
+export * from './recipe-to-client.dto';

@@ -28,9 +28,11 @@ export class ValidateNumber {
   }
 
   private static getNumber(data: string, isOptional: boolean): number {
-    if (isOptional) return 0;
+    const number = (data || null) as unknown as number;
 
-    return Number(data);
+    if (isOptional) return number;
+
+    return Number(number);
   }
 
   private static isValid(data: number, options: Options): boolean {

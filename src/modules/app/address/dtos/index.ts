@@ -5,6 +5,6 @@ export type AddressDTO = {
   district: string;
   street: string;
   zipCode: string;
-  number?: string;
-  complement?: string;
+  number: string;
+  complement: string;
 };

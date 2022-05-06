@@ -1,8 +1,17 @@
-import { Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn
+} from 'typeorm';
 import { myTransformer } from '../helpers';
 import { BaseEntity } from './base-entity';
 import { maxSize } from '@src/modules/common/constants';
 import { Status, UserRoles, userRoles } from '@src/modules/common/types/entities';
+import { Address } from './address';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -22,7 +31,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', select: false })
   public readonly password!: string;
 
-  @Index('IDX_user_cpf', { unique: true })
+  @Index('IDX_user_document', { unique: true })
   @Column({
     type: 'varchar',
     length: maxSize.CPF + maxSize.TRANSFORMER,
@@ -31,7 +40,7 @@ export class User extends BaseEntity {
     update: false,
     transformer: myTransformer
   })
-  public readonly cpf!: string;
+  public readonly document!: string;
 
   @Column({ type: 'smallint', default: 1, select: false })
   public readonly status!: Status;
@@ -48,4 +57,7 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at', default: 'now()', select: false })
   public readonly updatedAt!: Date;
+
+  @OneToMany(() => Address, address => address.user, { cascade: true })
+  public readonly address!: Address[];
 }
