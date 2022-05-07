@@ -11,8 +11,7 @@ export class FindUserRepository {
     return this.user.findOne({
       where: { document },
       select: {
-        id: true,
-        isActive: true
+        id: true
       }
     });
   }
@@ -21,9 +20,18 @@ export class FindUserRepository {
     return this.user.findOne({
       where: { email },
       select: {
-        id: true,
-        isActive: true
+        id: true
       }
     });
+  }
+
+  public byId(id: string): Promise<User | null> {
+    return this.user
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.address', 'address')
+      .where('user.id = :id', { id })
+      .andWhere('user.status <> :rejected', { rejected: 'REJECTED' })
+      .andWhere('user.status <> :deleted', { deleted: 'DELETED' })
+      .getOne();
   }
 }

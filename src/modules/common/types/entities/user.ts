@@ -8,6 +8,14 @@ export type UserRoles =
 
 export type UserStatus = 'TEMPORARY' | 'PENDING' | 'PERMANENT' | 'REJECTED' | 'DELETED';
 
+export enum userStatus {
+  TEMPORARY = 'TEMPORARY',
+  PENDING = 'PENDING',
+  PERMANENT = 'PERMANENT',
+  REJECTED = 'REJECTED',
+  DELETED = 'DELETED'
+}
+
 export enum userRoles {
   STUDENT = 'STUDENT',
   INSTRUCTOR = 'INSTRUCTOR',

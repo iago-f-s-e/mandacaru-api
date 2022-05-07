@@ -10,10 +10,11 @@ import {
 import { myTransformer } from '../helpers';
 import { BaseEntity } from './base-entity';
 import { maxSize } from '@src/modules/common/constants';
-import { Status, UserRoles, userRoles } from '@src/modules/common/types/entities';
+import { UserRoles, userRoles, UserStatus, userStatus } from '@src/modules/common/types/entities';
 import { Address } from './address';
 
 @Entity('user')
+@Index('IDX_user_email_status', ['email', 'status'], { unique: true })
 export class User extends BaseEntity {
   @PrimaryColumn({ type: 'uuid', name: 'user_id' })
   public readonly id!: string;
@@ -28,9 +29,6 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: maxSize.EMAIL, unique: true })
   public readonly email!: string;
 
-  @Column({ type: 'varchar', select: false })
-  public readonly password!: string;
-
   @Index('IDX_user_document', { unique: true })
   @Column({
     type: 'varchar',
@@ -42,15 +40,15 @@ export class User extends BaseEntity {
   })
   public readonly document!: string;
 
-  @Column({ type: 'smallint', default: 1, select: false })
-  public readonly status!: Status;
+  @Index('IDX_user_status', { unique: false })
+  @Column({ type: 'enum', enum: userStatus, default: 'TEMPORARY', select: false })
+  public readonly status!: UserStatus;
 
   @Column({ type: 'enum', enum: userRoles })
   public readonly role!: UserRoles;
 
-  @Index('IDX_user_is_active', { unique: false })
-  @Column({ type: 'boolean', name: 'is_active', default: true, select: false })
-  public readonly isActive!: boolean;
+  @Column({ type: 'varchar', select: false })
+  public readonly password!: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at', default: 'now()', select: false })
   public readonly createdAt!: Date;

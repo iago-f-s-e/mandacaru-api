@@ -1,3 +1,4 @@
+import { ValidateToCreateAddress } from '@src/modules/app/address/useCases/create-address/entity';
 import { maxSize, minSize } from '@src/modules/common/constants';
 import { ValidateResponse } from '@src/modules/common/types/responses';
 import { ValidateDocument, ValidateEmail, ValidateString } from '@src/modules/common/validators';
@@ -35,8 +36,9 @@ export class ValidateToCreateUser {
     const password = this.passwordOrError.value;
     const role = this.roleOrError.value;
     const document = this.documentOrError.value;
+    const address = data.address ? [new ValidateToCreateAddress(data.address).value] : undefined;
 
-    this.toCreate = this.afterValidate({ name, surname, email, password, role, document });
+    this.toCreate = this.afterValidate({ name, surname, email, password, role, document, address });
   }
 
   private set(data: UserDTO): asserts this is this & Set {
@@ -95,7 +97,8 @@ export class ValidateToCreateUser {
       email: validated.email.value.toLowerCase(),
       password: validated.password.value,
       role: validated.role.value,
-      document: validated.document.value
+      document: validated.document.value,
+      address: validated.address
     };
   }
 

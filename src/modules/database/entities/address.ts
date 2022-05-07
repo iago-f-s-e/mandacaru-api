@@ -9,10 +9,10 @@ export class Address extends BaseEntity {
   @PrimaryColumn({ type: 'uuid', name: 'address_id' })
   public readonly id!: string;
 
-  @Column({ type: 'uuid', name: 'user_id', nullable: true, update: false })
+  @Column({ type: 'uuid', name: 'user_id', nullable: true, update: false, select: false })
   public readonly userId!: string;
 
-  @Column({ type: 'uuid', name: 'subject_id', nullable: true, update: false })
+  @Column({ type: 'uuid', name: 'subject_id', nullable: true, update: false, select: false })
   public readonly subjectId!: string;
 
   @Column({ type: 'varchar', length: maxSize.ADDRESS_STATE })
