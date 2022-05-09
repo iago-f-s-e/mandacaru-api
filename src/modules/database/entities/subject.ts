@@ -13,11 +13,9 @@ import {
 import { BaseEntity } from './base-entity';
 
 import { maxSize } from '@src/modules/common/constants';
-import { Genders, genders } from '@src/modules/common/types/entities';
+import { Genders } from '@src/modules/common/types/entities';
 import { Address } from './address';
 import { User } from './user';
-
-// TODO: remover enums
 
 @Entity('subject')
 @Index('IDX_subject_email_user_id', ['email', 'userId'], { unique: true })
@@ -41,7 +39,7 @@ export class Subject extends BaseEntity {
   @Column({ type: 'date' })
   public readonly birthdate!: Date;
 
-  @Column({ type: 'enum', enum: genders })
+  @Column({ type: 'varchar', length: maxSize.GENDER })
   public readonly gender!: Genders;
 
   @Column({ type: 'real' })

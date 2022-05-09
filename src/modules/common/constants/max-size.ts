@@ -10,6 +10,7 @@ export const maxSize = {
   COOKING_MEASURE_NAME: 150,
   CPF: 14,
   EMAIL: 100,
+  GENDER: 12,
   NAME: 15,
   NUTRIENT_NAME: 50,
   RECIPE_NAME: 150,
@@ -18,5 +19,7 @@ export const maxSize = {
   SURNAME: 50,
   PASSWORD: 1028,
   TRANSFORMER: 100,
-  UNIT_MEASURE: 10
+  UNIT_MEASURE: 10,
+  USER_STATUS: 9,
+  USER_ROLE: 14
 };

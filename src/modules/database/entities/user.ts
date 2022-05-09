@@ -10,7 +10,7 @@ import {
 import { myTransformer } from '../helpers';
 import { BaseEntity } from './base-entity';
 import { maxSize } from '@src/modules/common/constants';
-import { UserRoles, userRoles, UserStatus, userStatus } from '@src/modules/common/types/entities';
+import { UserRoles, UserStatus } from '@src/modules/common/types/entities';
 import { Address } from './address';
 import { Subject } from './subject';
 
@@ -42,10 +42,10 @@ export class User extends BaseEntity {
   public readonly document!: string;
 
   @Index('IDX_user_status', { unique: false })
-  @Column({ type: 'enum', enum: userStatus, default: 'TEMPORARY', select: false })
+  @Column({ type: 'varchar', length: maxSize.USER_STATUS, default: 'TEMPORARY', select: false })
   public readonly status!: UserStatus;
 
-  @Column({ type: 'enum', enum: userRoles })
+  @Column({ type: 'varchar', length: maxSize.USER_ROLE })
   public readonly role!: UserRoles;
 
   @Column({ type: 'varchar', select: false })
