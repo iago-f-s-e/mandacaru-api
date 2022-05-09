@@ -25,6 +25,17 @@ export class FindUserRepository {
     });
   }
 
+  public byEmail(email: string): Promise<User | null> {
+    return this.user
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .leftJoinAndSelect('user.address', 'address')
+      .where('user.email = :email', { email })
+      .andWhere('user.status <> :rejected', { rejected: 'REJECTED' })
+      .andWhere('user.status <> :deleted', { deleted: 'DELETED' })
+      .getOne();
+  }
+
   public byId(id: string): Promise<User | null> {
     return this.user
       .createQueryBuilder('user')
