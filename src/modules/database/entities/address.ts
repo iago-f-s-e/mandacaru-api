@@ -3,6 +3,7 @@ import { BaseEntity } from './base-entity';
 import { User } from './user';
 import { maxSize } from '@src/modules/common/constants';
 import { myTransformer } from '../helpers';
+import { Subject } from './subject';
 
 @Entity('address')
 export class Address extends BaseEntity {
@@ -57,4 +58,11 @@ export class Address extends BaseEntity {
   @ManyToOne(() => User, user => user.address, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   public readonly user!: User;
+
+  @ManyToOne(() => Subject, subject => subject.address, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  @JoinColumn({ name: 'subject_id', referencedColumnName: 'id' })
+  public readonly subject!: Subject;
 }

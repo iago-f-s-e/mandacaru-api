@@ -1,0 +1,18 @@
+export type Genders =
+  | 'CIS_WOMAN'
+  | 'TRANS_WOMAN'
+  | 'CIS_MAN'
+  | 'TRANS_MAN'
+  | 'NON_BINARY'
+  | 'TRANSVESTITE'
+  | 'NOT_DECLARED';
+
+export enum genders {
+  CIS_WOMAN = 'CIS_WOMAN',
+  TRANS_WOMAN = 'TRANS_WOMAN',
+  CIS_MAN = 'CIS_MAN',
+  TRANS_MAN = 'TRANS_MAN',
+  NON_BINARY = 'NON_BINARY',
+  TRANSVESTITE = 'TRANSVESTITE',
+  NOT_DECLARED = 'NOT_DECLARED'
+}

@@ -1,6 +1,6 @@
 import { maxSize, minSize } from '@src/modules/common/constants';
 import { ValidateResponse } from '@src/modules/common/types/responses';
-import { ValidateNumber, ValidateString, ValidateUUID } from '@src/modules/common/validators';
+import { ValidateNumber, ValidateString } from '@src/modules/common/validators';
 import { ToBeAssert } from '@src/modules/common/validators/types';
 import { AddressDTO } from '../../../dtos';
 import { ValidateZipCode } from '../../../validators';
@@ -8,9 +8,13 @@ import { UpdateAddressDTO } from '../dtos';
 
 import { Assert, Errors, Set, Validated } from './types';
 
+type Entity = {
+  userId?: string;
+  subjectId?: string;
+};
+
 export class ValidateToUpdateAddress {
   private readonly toUpdate: UpdateAddressDTO;
-  protected userIdOrError!: ValidateResponse<ValidateUUID>;
   protected stateOrError!: ValidateResponse<ValidateString>;
   protected cityOrError!: ValidateResponse<ValidateString>;
   protected districtOrError!: ValidateResponse<ValidateString>;
@@ -19,11 +23,10 @@ export class ValidateToUpdateAddress {
   protected numberOrError!: ValidateResponse<ValidateNumber>;
   protected complementOrError!: ValidateResponse<ValidateString>;
 
-  constructor(data: AddressDTO & { userId: string }) {
+  constructor(data: AddressDTO & Entity) {
     this.set(data);
 
     this.assert(
-      this.userIdOrError,
       this.stateOrError,
       this.cityOrError,
       this.districtOrError,
@@ -34,7 +37,9 @@ export class ValidateToUpdateAddress {
     );
 
     const id = data.id;
-    const userId = this.userIdOrError.value;
+    const userId = data.userId;
+    const subjectId = data.subjectId;
+
     const state = this.stateOrError.value;
     const city = this.cityOrError.value;
     const district = this.districtOrError.value;
@@ -46,6 +51,7 @@ export class ValidateToUpdateAddress {
     this.toUpdate = this.afterValidate({
       id,
       userId,
+      subjectId,
       state,
       city,
       district,
@@ -56,10 +62,8 @@ export class ValidateToUpdateAddress {
     });
   }
 
-  private set(data: AddressDTO & { userId: string }): asserts this is this & Set {
+  private set(data: AddressDTO & Entity): asserts this is this & Set {
     const errorMessage = this.getErrorMessage(data);
-
-    this.userIdOrError = ValidateUUID.exec(data.userId, { errorMessage: errorMessage.userId });
 
     this.stateOrError = ValidateString.exec(
       data.state,
@@ -110,9 +114,8 @@ export class ValidateToUpdateAddress {
     }
   }
 
-  private getErrorMessage(data: AddressDTO & { userId: string }): Errors {
+  private getErrorMessage(data: AddressDTO & Entity): Errors {
     return {
-      userId: `The user id "${data.userId}" is invalid`,
       state: `The state "${data.state}" is invalid`,
       city: `The city "${data.city}" is invalid`,
       district: `The district "${data.district}" is invalid`,
@@ -126,7 +129,8 @@ export class ValidateToUpdateAddress {
   private afterValidate(validated: Validated): UpdateAddressDTO {
     return {
       id: validated.id,
-      userId: validated.userId.value,
+      userId: validated.userId,
+      subjectId: validated.subjectId,
       state: validated.state.value.toUpperCase(),
       city: validated.city.value.toUpperCase(),
       district: validated.district.value.toUpperCase(),

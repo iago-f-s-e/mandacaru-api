@@ -1,6 +1,7 @@
 export type UpdateAddressDTO = {
   id: string;
-  userId: string;
+  userId?: string;
+  subjectId?: string;
   state: string;
   city: string;
   district: string;

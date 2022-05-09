@@ -19,7 +19,7 @@ export class UpdateAddressService {
   }
 
   private update(data: UpdateAddressDTO): Promise<UpdateResult> {
-    const { userId: _omit, ...address } = data;
+    const { userId: _omit, subjectId: __omit, ...address } = data;
 
     return this.updateAddress.exec(address);
   }

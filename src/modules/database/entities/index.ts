@@ -8,4 +8,5 @@ export * from './nutrient';
 export * from './recipe';
 export * from './recipe-composition';
 export * from './reference';
+export * from './subject';
 export * from './user';

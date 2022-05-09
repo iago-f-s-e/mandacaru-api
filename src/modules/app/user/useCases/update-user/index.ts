@@ -11,6 +11,7 @@ import { UpdateUserService } from './service';
 @Module({
   imports: [TypeOrmModule.forFeature([User]), FindUserModule, UpdateAddressModule],
   controllers: [UpdateUserController],
+  exports: [UpdateUserRepository],
   providers: [UpdateUserRepository, UpdateUserService]
 })
 export class UpdateUserModule {}

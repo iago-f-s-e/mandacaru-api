@@ -1,11 +1,12 @@
 import { Right } from '@src/modules/common/either';
 import { ValidateResponse } from '@src/modules/common/types/responses';
-import { ValidateNumber, ValidateString, ValidateUUID } from '@src/modules/common/validators';
+import { ValidateNumber, ValidateString } from '@src/modules/common/validators';
 import { ValidateZipCode } from '../../../validators';
 
 export type Validated = {
   id: string;
-  userId: ValidateUUID;
+  userId?: string;
+  subjectId?: string;
   state: ValidateString;
   city: ValidateString;
   district: ValidateString;
@@ -16,7 +17,6 @@ export type Validated = {
 };
 
 export type Assert = {
-  userIdOrError: Right<null, ValidateUUID>;
   stateOrError: Right<null, ValidateString>;
   cityOrError: Right<null, ValidateString>;
   districtOrError: Right<null, ValidateString>;
@@ -27,7 +27,6 @@ export type Assert = {
 };
 
 export type Set = {
-  userIdOrError: ValidateResponse<ValidateUUID>;
   stateOrError: ValidateResponse<ValidateString>;
   cityOrError: ValidateResponse<ValidateString>;
   districtOrError: ValidateResponse<ValidateString>;
@@ -38,7 +37,6 @@ export type Set = {
 };
 
 export type Errors = {
-  userId: string;
   state: string;
   city: string;
   district: string;
