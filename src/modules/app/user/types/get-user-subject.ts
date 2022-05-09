@@ -1,3 +1,3 @@
-import { Subject } from '@src/modules/database/entities';
+import { SubjectToClientDTO } from '../../subject/dtos';
 
-export type GetUserSubject = Promise<Subject | Subject[]>;
+export type GetUserSubject = Promise<SubjectToClientDTO | SubjectToClientDTO[]>;

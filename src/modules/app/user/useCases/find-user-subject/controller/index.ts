@@ -1,4 +1,5 @@
 import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
+import { subjectToClient } from '@src/modules/app/subject/helpers';
 import { ListSubject } from '@src/modules/app/subject/useCases/find-subject/dtos';
 import { GetUserSubject } from '../../../types';
 import { FindUserSubjectService } from '../service';
@@ -16,11 +17,11 @@ export class FindUserSubjectController {
 
     if (subjectOrError.isLeft()) throw subjectOrError.value;
 
-    return subjectOrError.value;
+    return subjectToClient(subjectOrError.value);
   }
 
   @Get()
-  public exec(@Param('userId') userId: string, @Query() filter: ListSubject): GetUserSubject {
-    return this.findService.exec(userId, filter);
+  public async exec(@Param('userId') userId: string, @Query() filter: ListSubject): GetUserSubject {
+    return (await this.findService.exec(userId, filter)).map(subject => subjectToClient(subject));
   }
 }

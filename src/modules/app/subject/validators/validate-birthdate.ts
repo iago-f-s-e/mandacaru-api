@@ -22,7 +22,7 @@ export class ValidateBirthdate {
   }
 
   private static parseToUSDate(data: string): string {
-    return data.split('/').reverse().join('-');
+    return new Intl.DateTimeFormat('en-US').format(new Date(data));
   }
 
   public get value(): string {

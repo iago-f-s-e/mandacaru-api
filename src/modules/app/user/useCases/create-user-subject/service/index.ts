@@ -29,7 +29,7 @@ export class CreateUserSubjectService {
   }
 
   public async exec(data: CreateSubjectDTO): CreateResponse<Subject> {
-    const found = await this.findSubject.existing(data.name, data.userId);
+    const found = await this.findSubject.existing(data.email, data.userId);
 
     if (!found) return right(await this.insert(data));
 
