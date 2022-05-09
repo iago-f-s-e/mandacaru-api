@@ -1,0 +1,2941 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Mandacaru",
+    "description": "...",
+    "contact": {
+      "name": "..."
+    },
+    "version": "0.0.1"
+  },
+  "tags": [
+    { "name": "user" },
+    { "name": "subject" },
+    { "name": "admin" },
+    { "name": "aliment"},
+    { "name": "nutrient" },
+    { "name": "reference" },
+    { "name": "cooking measure" },
+    { "name": "recipe" }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create user",
+        "description": "This route is responsible for registering a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "email": "john_doe@hotmail.com",
+                    "password": "ebQfIKfl",
+                    "cpf": "708.459.910-00",
+                    "role": "STUDENT"
+                  }
+                },
+                "user with address": {
+                  "description": "If there is any error whit the address, the user will be registered, but without the link address, however, it is possible to add the address later",
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "email": "john_doe@hotmail.com",
+                    "password": "ebQfIKfl",
+                    "cpf": "708.459.910-00",
+                    "role": "STUDENT",
+                    "address": {
+                      "state": "SP",
+                      "city": "Paulina",
+                      "district": "São Luiz",
+                      "street": "Rua Praxiteles Ferreira Neves",
+                      "zipCode": "13145-078"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid surname": {
+                "example":"The surname \"{surname}\" is invalid"
+              },
+              "invalid email": {
+                "example": "The email \"{email}\" is invalid"
+              },
+              "invalid password": {
+                "example": "The password \"{password}\" is invalid"
+              },
+              "invalid cpf": {
+                "example": "The cpf \"{cpf}\" is invalid"
+              },
+              "invalid role": {
+                "example": "The role \"{role}\" is invalid"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid cpf": {
+                "example": "The cpf \"{cpf}\" already exists"
+              },
+              "invalid email": {
+                "example": "The email \"{email}\" already exists"
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user": {
+                    "value": {
+                      "user": {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "John",
+                        "surname": "Doe",
+                        "email": "john_doe@gmail.com",
+                        "role": "STUDENT",
+                        "status": "TEMPORARY"
+                      },
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXJ..."
+                    }
+                  },
+                  "user with address error": {
+                    "value": {
+                      "user": {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "John",
+                        "surname": "Doe",
+                        "email": "john_doe@gmail.com",
+                        "role": "STUDENT",
+                        "status": "TEMPORARY"
+                      },
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXJ...",
+                      "warning": "\"Address error message\""
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Update user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "User token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "role": "RESEARCHER"
+                  }
+                },
+                "user with address": {
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "role": "STUDENT",
+                    "address": {
+                      "state": "SP",
+                      "city": "Paulina",
+                      "district": "São Luiz",
+                      "street": "Rua Praxiteles Ferreira Neves",
+                      "zipCode": "13145-078"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid surname": {
+                "example": "The surname \"{surname}\" is invalid"
+              },
+              "invalid role": {
+                "example": "The role \"{role}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid user": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "User token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid user": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["user"],
+        "summary": "User login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "login": {
+                  "value": {
+                    "email": "john_doe@gmail.com",
+                    "password": "00000000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid user": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user": {
+                    "value": {
+                      "user": {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "John",
+                        "surname": "Doe",
+                        "email": "john_doe@gmail.com",
+                        "role": "STUDENT",
+                        "status": "TEMPORARY",
+                        "address": {
+                          "id": "c84a9f4d-4bac-4770-8559-770ee287aad2",
+                          "state": "Rio de Janeiro",
+                          "city": "São Gonçalo",
+                          "district": "Tribobó",
+                          "street": "Rua Álvaro Lins",
+                          "zipCode": "24750-590",
+                          "number": 655
+                        }
+                      },
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXJ..."
+                    }
+                  },
+                  "admin user": {
+                    "value": {
+                      "user": {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "John",
+                        "surname": "Doe",
+                        "email": "john_doe@gmail.com",
+                        "role": "STUDENT",
+                        "status": "TEMPORARY",
+                        "admin": true,
+                        "address": {
+                          "id": "c84a9f4d-4bac-4770-8559-770ee287aad2",
+                          "state": "Rio de Janeiro",
+                          "city": "São Gonçalo",
+                          "district": "Tribobó",
+                          "street": "Rua Álvaro Lins",
+                          "zipCode": "24750-590",
+                          "number": 655
+                        }
+                      },
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXJ..."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/subjects": {
+      "get": {
+        "tags": ["user"],
+        "summary": "User subjects",
+        "description": "This route is responsible for listing all user subjects",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "User token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          },
+          {
+            "name": "query filter",
+            "in": "query",
+            "required": false,
+            "description": "Query to filter subject",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "examples": {
+              "query": {
+                "value": {
+                  "name": "string",
+                  "surname": "string",
+                  "email": "string",
+                  "gender": ["CIS_WOMAN", "TRANS_WOMAN", "CIS_MAN", "TRANS_MAN", "NON_BINARY", "TRANSVESTITE", "NOT_DECLARED"]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid user": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_subjects": {
+                    "value": [
+                      {
+                        "id": "ff5bb71b-2818-46f6-ab30-75950c644597",
+                        "name": "John",
+                        "surname": "Doe",
+                        "email": "john_doe@gmail.com",
+                        "gender": "CIS_MAN",
+                        "birthdate": "25/04/2000",
+                        "weight": 65.7,
+                        "height": 1.70,
+                        "circumference": 0.50
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject": {
+      "post": {
+        "tags": ["subject"],
+        "summary": "Subject registration",
+        "description": "This route is responsible for registering a new subject",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "User token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Subject"
+              },
+              "examples": {
+                "subject": {
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "email": "john_doe@gmail.com",
+                    "birthdate": "25/04/2000",
+                    "gender": "CIS_MAN",
+                    "weight": 65.7,
+                    "height": 1.70,
+                    "circumference": 0.50
+                  }
+                },
+                "subject with address": {
+                  "description": "If there is any error whit the address, the subject will be registered, but without the link address, however, it is possible to add the address later",
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "email": "john_doe@gmail.com",
+                    "birthdate": "25/04/2000",
+                    "gender": "CIS_MAN",
+                    "weight": 65.7,
+                    "height": 1.70,
+                    "circumference": 0.50,
+                    "address": {
+                      "state": "Rio de Janeiro",
+                      "city": "São Gonçalo",
+                      "district": "Tribobó",
+                      "street": "Rua Álvaro Lins",
+                      "number": 655,
+                      "zipCode": "24750-590"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid surname": {
+                "example": "The surname \"{surname}\" is invalid"
+              },
+              "invalid email": {
+                "example": "The email \"{email}\" is invalid"
+              },
+              "invalid birthdate": {
+                "example": "The birthdate \"{birthdate}\" is invalid"
+              },
+              "invalid gender": {
+                "example": "The gender \"{gender}\" is invalid"
+              },
+              "invalid circumference": {
+                "example": "The circumference \"{circumference}\" is invalid"
+              },
+              "invalid height": {
+                "example": "The height \"{height}\" is invalid"
+              },
+              "invalid weight": {
+                "example": "The weight \"{weight}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid user": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid email": {
+                "example": "The email \"{email}\" already exists"
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "subject": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "John",
+                      "surname": "Doe",
+                      "email": "john_doe@gmail.com",
+                      "gender": "CIS_MAN",
+                      "birthdate": "25/04/2000",
+                      "weight": 65.7,
+                      "height": 1.7,
+                      "circumference": 0.50,
+                      "address": {
+                        "id": "ecaaa7f1-707c-45cc-a686-bc6b596eed2f",
+                        "state": "Rio de Janeiro",
+                        "city": "São Gonçalo",
+                        "district": "Tribobó",
+                        "street": "Rua Álvaro Lins",
+                        "zipCode": "24750-590",
+                        "number": 655
+                      }
+                    }
+                  },
+                  "subject with address error": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "John",
+                      "surname": "Doe",
+                      "email": "john_doe@gmail.com",
+                      "gender": "CIS_MAN",
+                      "birthdate": "25/04/2000",
+                      "weight": 65.7,
+                      "height": 1.7,
+                      "circumference": 0.50,
+                      "address": {
+                        "id": "ecaaa7f1-707c-45cc-a686-bc6b596eed2f",
+                        "state": "Rio de Janeiro",
+                        "city": "São Gonçalo",
+                        "district": "Tribobó",
+                        "street": "Rua Álvaro Lins",
+                        "zipCode": "24750-590",
+                        "number": 655
+                      },
+                      "warning": "\"Address error message\""
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject/{id}": {
+      "get": {
+        "tags": ["subject"],
+        "summary": "Find subject by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "User token or admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid param": {
+                "example": "The param id is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid user": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "subject": {
+                "example": "Subject is not found"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "subject": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "John",
+                      "surname": "Doe",
+                      "email": "john_doe@gmail.com",
+                      "gender": "CIS_MAN",
+                      "birthdate": "25/04/2000",
+                      "weight": 65.7,
+                      "height": 1.7,
+                      "circumference": 0.50,
+                      "address": {
+                        "id": "ecaaa7f1-707c-45cc-a686-bc6b596eed2f",
+                        "state": "Rio de Janeiro",
+                        "city": "São Gonçalo",
+                        "district": "Tribobó",
+                        "street": "Rua Álvaro Lins",
+                        "zipCode": "24750-590",
+                        "number": 655
+                      },
+                      "user": {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "John",
+                        "surname": "Doe",
+                        "email": "john_doe@gmail.com",
+                        "role": "STUDENT",
+                        "status": "TEMPORARY"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["subject"],
+        "summary": "Update subject",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "User token or admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Subject"
+              },
+              "examples": {
+                "subject": {
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "email": "john_doe@gmail.com",
+                    "birthdate": "25/04/2000",
+                    "gender": "CIS_MAN",
+                    "weight": 65.7,
+                    "height": 1.70,
+                    "circumference": 0.50
+                  }
+                },
+                "subject with address": {
+                  "description": "If there is any error whit the address, the subject will be registered, but without the link address, however, it is possible to add the address later",
+                  "value": {
+                    "name": "John",
+                    "surname": "Doe",
+                    "email": "john_doe@gmail.com",
+                    "birthdate": "25/04/2000",
+                    "gender": "CIS_MAN",
+                    "weight": 65.7,
+                    "height": 1.70,
+                    "circumference": 0.50,
+                    "address": {
+                      "state": "Rio de Janeiro",
+                      "city": "São Gonçalo",
+                      "district": "Tribobó",
+                      "street": "Rua Álvaro Lins",
+                      "number": 655,
+                      "zipCode": "24750-590"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid params": {
+                "example": {
+                  "message": "The param id is invalid"
+                }
+              },
+              "invalid name": {
+                "example": {
+                  "message": "The name \"John\" is invalid"
+                }
+              },
+              "invalid surname": {
+                "example": {
+                  "message": "The surname \"Doe\" is invalid"
+                }
+              },
+              "invalid email": {
+                "example": {
+                  "message": "The email \"john_doe@gmail.com\" is invalid"
+                }
+              },
+              "invalid birthdate": {
+                "example": {
+                  "message": "The birthdate \"25/04/2000\" is invalid"
+                }
+              },
+              "invalid gender": {
+                "example": {
+                  "message": "The gender \"CIS_MAN\" is invalid"
+                }
+              },
+              "invalid circumference": {
+                "example": {
+                  "message": "The circumference \"0.50\" is invalid"
+                }
+              },
+              "invalid height": {
+                "example": {
+                  "message": "The height \"1.70\" is invalid"
+                }
+              },
+              "invalid weight": {
+                "example": {
+                  "message": "The weight \"65.7\" is invalid"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid user": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "subject": {
+                "example": {
+                  "message": "Subject is not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "email": {
+                "example": {
+                  "message": "The email \"john_doe@gmail.com\" already exists"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["subject"],
+        "summary": "Delete subject",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "User token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not found Error",
+            "content": {
+              "subject": {
+                "example": "Subject is not found"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/admin": {
+      "post": {
+        "tags": ["admin"],
+        "summary": "Admin registration",
+        "description": "This route is responsible for registering a new admin",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                    "role": "MASTER"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid role": {
+                "example": "The \"{role}\" is invalid"
+              },
+              "invalid id": {
+                "example": "The id \"{id}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "user": {
+                "example": "User is not found"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid id": {
+                "example": "Admin already exists"
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/nutrient": {
+      "post": {
+        "tags": ["nutrient"],
+        "summary": "Nutrient registration",
+        "description": "This route is responsible for registering a new nutrient",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Nutrient"
+              },
+              "examples": {
+                "nutrient": {
+                  "value": {
+                    "name": "Zinc",
+                    "abbreviation": "Zn",
+                    "unitMeasure": "mg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid abbreviation": {
+                "example": "The abbreviation \"{abbreviation}\" is invalid"
+              },
+              "invalid unit measure": {
+                "example": "The unit measure \"{unitMeasure}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              },
+              "invalid abbreviation": {
+                "example": "The abbreviation \"{abbreviation}\" already exists"
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Nutrient"
+                },
+                "examples": {
+                  "nutrient": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "ZINC",
+                      "abbreviation": "Zn",
+                      "unitMeasure": "mg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["nutrient"],
+        "summary": "List nutrients",
+        "description": "This route is responsible for registering a new nutrient",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          },
+          {
+            "name": "query filter",
+            "in": "query",
+            "required": false,
+            "description": "Query to filter nutrient",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/Nutrient"
+            },
+            "examples": {
+              "query": {
+                "value": {
+                  "name": "string",
+                  "abbreviation": "string",
+                  "unitMeasure": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Nutrient"
+                },
+                "examples": {
+                  "nutrients": {
+                    "value": [
+                      {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "ZINC",
+                        "abbreviation": "Zn",
+                        "unitMeasure": "mg"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nutrient/{id}": {
+      "get": {
+        "tags": ["nutrient"],
+        "summary": "Find nutrient by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Nutrient"
+                },
+                "examples": {
+                  "nutrient": {
+                    "value": {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "PATH NAME",
+                        "abbreviation": "Zn",
+                        "unitMeasure": "mg",
+                        "compositions": [
+                          {
+                            "quantity": 55.5,
+                            "composition": {
+                              "id": "0dddec39-7c64-4b5e-8858-20dc4fd6b294",
+                              "quantity": 55.5,
+                              "aliment": {
+                                "id": "a5e06c26-4168-4e26-9e1f-3c81aeca0844",
+                                "name": "BEEN"
+                              }
+                            },
+                            "reference": {
+                              "quantity": 58.5,
+                              "nutrient": {
+                                "id": "446ac023-f8e9-4883-a325-49ba4d334303",
+                                "name": "PATH NAME",
+                                "abbreviation": "PN"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["nutrient"],
+        "summary": "Update nutrient",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reference"
+              },
+              "examples": {
+                "nutrient": {
+                  "value": {
+                    "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                    "name": "Zinc",
+                    "abbreviation": "Zn",
+                    "unitMeasure": "mg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid id": {
+                "example": "The id is invalid"
+              },
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid abbreviation": {
+                "example": "The abbreviation \"{abbreviation}\" is invalid"
+              },
+              "invalid unit measure": {
+                "example": "The unit measure \"{unitMeasure}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "reference": {
+                "example": {
+                  "message": "Nutrient is not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              },
+              "invalid abbreviation": {
+                "example": "The abbreviation \"{abbreviation}\" already exists"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["nutrient"],
+        "summary": "Delete nutrient",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "nutrient": {
+                "example": "Nutrient is not found"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/reference": {
+      "post": {
+        "tags": ["reference"],
+        "summary": "Reference registration",
+        "description": "This route is responsible for registering a new reference",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reference"
+              },
+              "examples": {
+                "reference": {
+                  "value": {
+                    "name": "Path name",
+                    "abbreviation": "PN"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Reference"
+                },
+                "examples": {
+                  "reference": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "PATH NAME"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["reference"],
+        "summary": "List references",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          },
+          {
+            "name": "query filter",
+            "in": "query",
+            "required": false,
+            "description": "Query to filter reference",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/Reference"
+            },
+            "examples": {
+              "query": {
+                "value": {
+                  "name": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Reference"
+                },
+                "examples": {
+                  "references": {
+                    "value": [
+                      {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "PATH NAME"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      } 
+    },
+    "/reference/{id}": {
+      "get": {
+        "tags": ["reference"],
+        "summary": "Find reference by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Reference"
+                },
+                "examples": {
+                  "reference": {
+                    "value": {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "PATH NAME",
+                        "abbreviation": "PN",
+                        "compositions": [
+                          {
+                            "id": "0dddec39-7c64-4b5e-8858-20dc4fd6b294",
+                            "quantity": 55.5,
+                            "aliment": {
+                              "id": "a5e06c26-4168-4e26-9e1f-3c81aeca0844",
+                              "name": "BEEN"
+                            },
+                            "nutrients": [
+                              {
+                                "quantity": 58.5,
+                                "nutrient": {
+                                  "id": "d56959cc-21e0-4f1b-b2cc-5a43d953041b",
+                                  "name": "ZINC",
+                                  "abbreviation": "Zn",
+                                  "unitMeasure": "mg"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["reference"],
+        "summary": "Update reference",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reference"
+              },
+              "examples": {
+                "reference": {
+                  "value": {
+                    "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                    "name": "PATH NAME",
+                    "abbreviation": "PN"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid id": {
+                "example": "The id is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "reference": {
+                "example": {
+                  "message": "Reference is not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["reference"],
+        "summary": "Delete reference",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "reference": {
+                "example": "Reference is not found"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/cooking-measure": {
+      "post": {
+        "tags": ["cooking measure"],
+        "summary": "Cooking measure registration",
+        "description": "This route is responsible for registering a new cooking measure",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cooking Measure"
+              },
+              "examples": {
+                "cooking measure": {
+                  "value": {
+                    "name": "teaspoon"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Cooking Measure"
+                },
+                "examples": {
+                  "cooking-measure": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "TEASPOON"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["cooking measure"],
+        "summary": "List cooking measures",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          },
+          {
+            "name": "query filter",
+            "in": "query",
+            "required": false,
+            "description": "Query to filter reference",
+            "allowEmptyValue": true,
+            "schema": {
+              "$ref": "#/components/schemas/Cooking Measure"
+            },
+            "examples": {
+              "query": {
+                "value": {
+                  "name": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Cooking Measure"
+                },
+                "examples": {
+                  "cooking measures": {
+                    "value": [
+                      {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "TEASPOON"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      } 
+    },
+    "/cooking-measure/{id}": {
+      "get": {
+        "tags": ["cooking measure"],
+        "summary": "Find cooking measure by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Aliment"
+                },
+                "examples": {
+                  "cooking-measure": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "TEASPOON"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["cooking measure"],
+        "summary": "Update cooking measure",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reference"
+              },
+              "examples": {
+                "cooking measure": {
+                  "value": {
+                    "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                    "name": "teaspoon"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid id": {
+                "example": "The id is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "cooking measure": {
+                "example": {
+                  "message": "Cooking measure is not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["cooking measure"],
+        "summary": "Delete cooking measure",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "cooking measure": {
+                "example": "Cooking measure is not found"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      } 
+    },
+    "/aliment": {
+      "post": {
+        "tags": ["aliment"],
+        "summary": "Aliment registration",
+        "description": "This route is responsible for registering a new aliment",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Aliment"
+              },
+              "examples": {
+                "aliment": {
+                  "value": {
+                    "name": "Bean",
+                    "composition": {
+                      "quantity": 58.25,
+                      "reference": {
+                        "id": "b3658d3e-a402-40fe-95e3-cd593608b22f"
+                      },
+                      "nutrients": [
+                        {
+                          "nutrient": {
+                            "id": "b33c5f0c-29a2-47cc-9377-07f40be88ea8"
+                          },
+                          "quantity": 58.5
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "Missing aliment property": {
+                "example": "Missing aliment: \"{property}\""
+              },
+              "Missing composition property": {
+                "example": "Missing composition property: \"{property}\""
+              },
+              "Missing composition nutrient property": {
+                "example": "Missing composition nutrient property: \"{property}\""
+              },
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid composition quantity": {
+                "example": "The composition quantity \"{quantity}\" is invalid"
+              },
+              "invalid composition referenceId": {
+                "example": "The reference id \"{referenceId}\" is invalid"
+              },
+              "invalid composition nutrient quantity": {
+                "example": "The composition nutrient quantity \"{quantity}\" is invalid"
+              },
+              "invalid composition nutrient nutrientId": {
+                "example": "The nutrient id \"{nutrientId}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict Error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Aliment"
+                },
+                "examples": {
+                  "aliment": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "Bean",
+                      "isActive": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["aliment"],
+        "summary": "List aliments",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Aliment"
+                },
+                "examples": {
+                  "aliments": {
+                    "value": [
+                      {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "BEAN",
+                        "composition": {
+                          "compositionId": "e24199dc-3108-45c0-b377-41eda09cbb32",
+                          "quantity": 55.5,
+                          "reference": {
+                            "referenceId": "995c2063-45f3-4406-8add-1498aeaaae1a",
+                            "name": "PATH NAME"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aliment/{id}": {
+      "get": {
+        "tags": ["aliment"],
+        "summary": "Find aliment by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Aliment"
+                },
+                "examples": {
+                  "aliment": {
+                    "value": {
+                      "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                      "name": "BEAN",
+                      "composition": {
+                        "compositionId": "e24199dc-3108-45c0-b377-41eda09cbb32",
+                        "quantity": 55.5,
+                        "reference": {
+                          "referenceId": "995c2063-45f3-4406-8add-1498aeaaae1a",
+                          "name": "PATH NAME",
+                          "abbreviation": "PN"
+                        },
+                        "nutrients": [
+                          {
+                            "quantity": 58.5,
+                            "nutrient": {
+                              "nutrientId": "c8ebe209-c64b-4b24-b148-300b54410b3a",
+                              "name": "ZINC",
+                              "abbreviation": "Zn",
+                              "unitMeasure": "mg"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["aliment"],
+        "summary": "Update aliment",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref":"#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reference"
+              },
+              "examples": {
+                "aliment": {
+                  "value": {
+                    "id": "94ec2b69-bf39-4726-a54a-2fa5cf78a1ad",
+                    "name": "Bean",
+                    "composition": {
+                      "id": "742773ed-a279-426e-864e-ad4c70ce1cdf",
+                      "quantity": 58.25,
+                      "reference": {
+                        "id": "b3658d3e-a402-40fe-95e3-cd593608b22f"
+                      },
+                      "nutrients": [
+                        {
+                          "nutrient": {
+                            "id": "b33c5f0c-29a2-47cc-9377-07f40be88ea8"
+                          },
+                          "quantity": 58.5
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid id": {
+                "example": "The id is invalid"
+              },
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid composition quantity": {
+                "example": "The composition quantity \"{quantity}\" is invalid"
+              },
+              "invalid composition referenceId": {
+                "example": "The reference id \"{referenceId}\" is invalid"
+              },
+              "invalid composition nutrient quantity": {
+                "example": "The composition nutrient quantity \"{quantity}\" is invalid"
+              },
+              "invalid composition nutrient nutrientId": {
+                "example": "The nutrient id \"{nutrientId}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "aliment": {
+                "example": {
+                  "message": "Aliment is not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" already exists"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["aliment"],
+        "summary": "Delete aliment",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not found Error",
+            "content": {
+              "aliment": {
+                "example": "Aliment is not found"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/aliment/{id}/measures": {
+      "get": {
+        "tags": ["aliment"],
+        "summary": "Find aliment by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "404": {
+            "description": "Not found error",
+            "content": {
+              "aliment": {
+                "example": {
+                  "message": "Aliment is not found"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Cooking Measure"
+                },
+                "examples": {
+                  "cooking measures": {
+                    "value": [
+                      {
+                        "id": "28cadcc5-4448-4297-8347-417fc4a914b2",
+                        "name": "TEASPOON"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe": {
+      "post": {
+        "tags": ["recipe"],
+        "summary": "Recipe registration",
+        "description": "This route is responsible for registering a new recipe",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Aliment"
+              },
+              "examples": {
+                "aliment": {
+                  "value": {
+                    "name": "Recipe name",
+                    "gram": 3500,
+                    "referenceId": "b3658d3e-a402-40fe-95e3-cd593608b22f",
+                    "preparationMethod": "preparation example",
+                    "compositions": [
+                      {
+                        "alimentId": "b3658d3e-a402-40fe-95e3-cd593608b22f",
+                        "measureId": "b3658d3e-a402-40fe-95e3-cd593608b22f",
+                        "quantity": 500
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "invalid name": {
+                "example": "The name \"{name}\" is invalid"
+              },
+              "invalid referenceId": {
+                "example": "The reference id \"{referenceId}\" is invalid"
+              },
+              "invalid gram": {
+                "example": "The gram \"{gram}\" is invalid"
+              },
+
+              "invalid composition alimentId": {
+                "example": "The composition aliment id \"{alimentId}\" is invalid"
+              },
+
+              "invalid composition measureId": {
+                "example": "The composition cooking measure id \"{measureId}\" is invalid"
+              },
+              "invalid composition quantity": {
+                "example": "The composition quantity \"{quantity}\" is invalid"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Recipe"
+                },
+                "examples": {
+                  "aliment": {
+                    "value": {
+                      "id": "b3658d3e-a402-40fe-95e3-cd593608b22f",
+                      "name": "Recipe name",
+                      "gram": 3500,
+                      "referenceId": "b3658d3e-a402-40fe-95e3-cd593608b22f",
+                      "preparationMethod": "preparation example",
+                      "compositions": [
+                        {
+                          "alimentId": "b3658d3e-a402-40fe-95e3-cd593608b22f",
+                          "measureId": "b3658d3e-a402-40fe-95e3-cd593608b22f",
+                          "quantity": 500
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["recipe"],
+        "summary": "List recipes",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "required": true,
+            "description": "Admin token",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "examples": {
+              "access-token": {
+                "value": {
+                  "access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized error",
+            "content": {
+              "invalid admin": {
+                "example": "Invalid data"
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/Recipe"
+                },
+                "examples": {
+                  "recipes": {
+                    "value": [
+                      {
+                        "id": "f02e1a8a-edeb-4eda-80df-7fea664337ec",
+                        "name": "Recipe name",
+                        "gram": 3500,
+                        "reference": {
+                          "name": "Reference name"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 25
+          },
+          "city": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 35
+          },
+          "district": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "street": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "zipCode": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 9
+          },
+          "complement": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 30,
+            "nullable": true
+          },
+          "number": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["MODERATOR", "MASTER"]
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "Aliment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "composition": {
+            "$ref": "#/components/schemas/Composition"
+          }
+        }
+      },
+      "Composition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "nutrients": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "quantity": {
+                  "type": "number"
+                },
+                "nutrient": {
+                  "$ref": "#/components/schemas/Nutrient"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Cooking Measure": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Nutrient": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "abbreviation": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "unitMeasure": {
+            "type": "string",
+            "maxLength": 10
+          }
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "gram": {
+            "type": "number"
+          },
+          "preparationMethod": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/Reference"
+          }
+        }
+      },
+
+      "Reference": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 150
+          }
+        }
+      },
+      "Subject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 15
+          },
+          "surname": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "email": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "birthdate": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": ["CIS_WOMAN", "TRANS_WOMAN", "CIS_MAN", "TRANS_MAN", "NON_BINARY", "TRANSVESTITE", "NOT_DECLARED"]
+          },
+          "weight": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "circumference": {
+            "type": "number"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 15
+          },
+          "surname": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50
+          },
+          "email": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["STUDENT", "INSTRUCTOR", "RESEARCHER", "PROFESSIONAL", "PUBLIC_MANAGER","OTHER"]
+          },
+          "cpf": {
+            "type": "string",
+            "minLength": 11,
+            "maxLength": 14
+          },
+          "status": {
+            "type": "string",
+            "enum": ["TEMPORARY", "PENDING", "PERMANENT", "REJECTED"]
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
